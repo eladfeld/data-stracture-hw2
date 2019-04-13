@@ -58,9 +58,9 @@ public class FloorsArrayList implements DynamicSet {
     	FloorsArrayLink right = comp;
     	FloorsArrayLink left = comp.getPrev(0);
     	for(int i = 0 ;i < arrSize; i++ ) { //changes the toInsert's array's pointers to the correct values.
-    		while(left.getArrSize() <= i ) left = left.getPrev(i);
+    		while(left.getArrSize() <= i ) left = left.getPrev(i-1);
     		toInsert.setPrev(i, left);
-    		while(right.getArrSize() <= i) right = right.getNext(i);
+    		while(right.getArrSize() <= i) right = right.getNext(i-1);
     		toInsert.setNext(i, right);
     	}
     	for(int i = arrSize -1; i >= 0; i--) { //change the surrounding links' array's pointer
@@ -85,25 +85,21 @@ public class FloorsArrayList implements DynamicSet {
 
     @Override
     public double successor(FloorsArrayLink link) {
-        //@TODO: implement
-        return 0;
+        return link.getNext(0).getKey();
     }
 
     @Override
     public double predecessor(FloorsArrayLink link) {
-        //@TODO: implement
-        return 0;
+        return link.getPrev(0).getKey();
     }
 
     @Override
     public double minimum() {
-        //@TODO: implement
-        return 0;
+        return predecessor(top);
     }
 
     @Override
     public double maximum() {
-        //@TODO: implement
-        return 0;
+        return successor(bottom);
     }
 }
