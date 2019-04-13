@@ -74,11 +74,44 @@ public class FloorsArrayList implements DynamicSet {
     
     @Override
     public void remove(FloorsArrayLink toRemove) {
+    	
+    	FloorsArrayLink right = toRemove.getNext(0);
+    	FloorsArrayLink left = toRemove.getPrev(0);
+
+    	
+    	for(int i=0 ; i<toRemove.getArrSize() ; i++)
+    	{
+    		while(left.getArrSize() <= i) {left.getPrev(0);}
+    		while(right.getArrSize() <= i) {right.getNext(0);}
+    		left.setNext(i, right);
+    		right.setPrev(i, left);
+    	
+    	}
         //@TODO: implement
     }
 
     @Override
     public FloorsArrayLink lookup(double key) {
+    	
+    	FloorsArrayLink curr = bottom;
+    	/*
+    	int i = size - 1;
+    	for( ; i>=0 ; i--)
+    	{
+    		if(curr.getNext(i).getKey()<key) { curr = curr.getNext(i); i++;}
+    	}
+    	if(curr.successor(0).equals(key)){return curr.getNext(0);}
+    	else {return null;}
+    	*/
+    	
+    	for(int j = size-1 ; j>=0 ; j--) {
+    		while( curr.getKey() < key) {curr = curr.getNext(j);}
+    		if(curr.getKey() == key)return curr;	
+    	}	
+    	return null;
+    	
+    	
+    	
         //@TODO: implement
         return null;
     }
