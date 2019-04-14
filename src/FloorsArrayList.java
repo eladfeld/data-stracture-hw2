@@ -49,14 +49,16 @@ public class FloorsArrayList implements DynamicSet {
 
     @Override
     public void insert(double key, int arrSize) {
+    	if(size<bottom.getArrSize()-1) {
     	FloorsArrayLink toInsert = new FloorsArrayLink(key,arrSize);
     	FloorsArrayLink comp = bottom;
     	//finds place for the key
-    	while(comp.getKey() < toInsert.getKey()) {
-    		comp=comp.getNext(0);
+
+    	for(int i=bottom.getArrSize()-1 ; i>=0 ; i--) {
+    		while(comp.getNext(i).getKey()<key){comp = comp.getNext(i);}   		
     	}
-    	FloorsArrayLink right = comp;
-    	FloorsArrayLink left = comp.getPrev(0);
+    	FloorsArrayLink right = comp.getNext(0);
+    	FloorsArrayLink left = comp;
     	for(int i = 0 ;i < arrSize; i++ ) { //changes the toInsert's array's pointers to the correct values.
     		while(left.getArrSize() <= i ) left = left.getPrev(i-1);
     		toInsert.setPrev(i, left);
@@ -71,6 +73,7 @@ public class FloorsArrayList implements DynamicSet {
     	}   	
     size++;
     }
+    }
     
     @Override
     public void remove(FloorsArrayLink toRemove) {
@@ -81,39 +84,25 @@ public class FloorsArrayList implements DynamicSet {
     	
     	for(int i=0 ; i<toRemove.getArrSize() ; i++)
     	{
-    		while(left.getArrSize() <= i) {left.getPrev(0);}
-    		while(right.getArrSize() <= i) {right.getNext(0);}
+    		while(left.getArrSize() <= i) {left = left.getPrev(0);}
+    		while(right.getArrSize() <= i) {right = right.getNext(0);}
     		left.setNext(i, right);
     		right.setPrev(i, left);
     	
     	}
-        //@TODO: implement
+    	size--;
     }
 
     @Override
     public FloorsArrayLink lookup(double key) {
     	
-    	FloorsArrayLink curr = bottom;
-    	/*
-    	int i = size - 1;
-    	for( ; i>=0 ; i--)
-    	{
-    		if(curr.getNext(i).getKey()<key) { curr = curr.getNext(i); i++;}
-    	}
-    	if(curr.successor(0).equals(key)){return curr.getNext(0);}
-    	else {return null;}
-    	*/
-    	
-    	for(int j = size-1 ; j>=0 ; j--) {
-    		while( curr.getKey() < key) {curr = curr.getNext(j);}
+    	FloorsArrayLink curr = bottom;    	
+    	for(int i = size-1 ; i>=0 ; i--) {
+    		while( curr.getNext(i).getKey() <= key) {curr = curr.getNext(i);}
     		if(curr.getKey() == key)return curr;	
     	}	
     	return null;
     	
-    	
-    	
-        //@TODO: implement
-        return null;
     }
 
     @Override
