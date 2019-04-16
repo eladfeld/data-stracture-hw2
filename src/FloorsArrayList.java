@@ -98,7 +98,9 @@ public class FloorsArrayList implements DynamicSet {
     	
     	FloorsArrayLink curr = bottom;    	
     	for(int i = size-1 ; i>=0 ; i--) {
-    		while( curr.getNext(i).getKey() <= key) {curr = curr.getNext(i);}
+    		while( curr.getNext(i).getKey() <= key) {
+    			curr = curr.getNext(i);
+    			}
     		if(curr.getKey() == key)return curr;	
     	}	
     	return null;
@@ -117,11 +119,11 @@ public class FloorsArrayList implements DynamicSet {
 
     @Override
     public double minimum() {
-        return predecessor(top);
+        return successor(bottom);
     }
 
     @Override
     public double maximum() {
-        return successor(bottom);
+        return predecessor(top);
     }
 }
