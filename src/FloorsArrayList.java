@@ -1,17 +1,21 @@
 public class FloorsArrayList implements DynamicSet {
 	private int size;
+	private int maxSize;
 	private FloorsArrayLink bottom;
 	private FloorsArrayLink top;
+	int longestArray;
 	
 	
     public FloorsArrayList(int N){
-    this.size = 0;
-    this.bottom = new FloorsArrayLink(Double.NEGATIVE_INFINITY,N + 1);
-    this.top = new FloorsArrayLink(Double.POSITIVE_INFINITY,N + 1);
-    for(int i=0 ; i < N + 1 ; i++){
-    	bottom.setNext(i, top);
-    	top.setPrev(i, bottom);
-    }
+    	longestArray = 0;
+    	this.maxSize = N;
+	    this.size = 0;
+	    this.bottom = new FloorsArrayLink(Double.NEGATIVE_INFINITY,N + 1);
+	    this.top = new FloorsArrayLink(Double.POSITIVE_INFINITY,N + 1);
+	    for(int i=0 ; i < N + 1 ; i++){
+	    	bottom.setNext(i, top);
+	    	top.setPrev(i, bottom);
+	    }
     }
     
     
@@ -49,12 +53,14 @@ public class FloorsArrayList implements DynamicSet {
 
     @Override
     public void insert(double key, int arrSize) {
-    	if(size<bottom.getArrSize()-1) {
+    	if(size < maxSize & arrSize <= maxSize) {
+    	
+    	longestArray = Math.max(arrSize, longestArray);
     	FloorsArrayLink toInsert = new FloorsArrayLink(key,arrSize);
     	FloorsArrayLink comp = bottom;
     	//finds place for the key
 
-    	for(int i=bottom.getArrSize()-1 ; i>=0 ; i--) {
+    	for(int i=maxSize ; i>=0 ; i--) {
     		while(comp.getNext(i).getKey()<key){comp = comp.getNext(i);}   		
     	}
     	FloorsArrayLink right = comp.getNext(0);
@@ -80,7 +86,16 @@ public class FloorsArrayList implements DynamicSet {
     	
     	FloorsArrayLink right = toRemove.getNext(0);
     	FloorsArrayLink left = toRemove.getPrev(0);
-
+    	
+    	boolean isFound = false;
+    	if(toRemove.getArrSize()==longestArray) {
+    		for(int i = toRemove.getArrSize()-1 ; i>=0 & !isFound ; i--) {
+    			if(toRemove.getNext(i) != top | toRemove.getPrev(i) != bottom) {
+    				longestArray = i+1;
+    				isFound = true;
+    			}
+    		}
+    	}
     	
     	for(int i=0 ; i<toRemove.getArrSize() ; i++)
     	{
@@ -91,13 +106,15 @@ public class FloorsArrayList implements DynamicSet {
     	
     	}
     	size--;
+    	if(size==0) {longestArray = 0;}
     }
 
     @Override
     public FloorsArrayLink lookup(double key) {
     	
-    	FloorsArrayLink curr = bottom;    	
-    	for(int i = size-1 ; i>=0 ; i--) {
+    	FloorsArrayLink curr = bottom; 
+    	// was size-1 instead of maxSize
+    	for(int i = longestArray ; i>=0 ; i--) {
     		while( curr.getNext(i).getKey() <= key) {
     			curr = curr.getNext(i);
     			}
@@ -126,4 +143,14 @@ public class FloorsArrayList implements DynamicSet {
     public double maximum() {
         return predecessor(top);
     }
+
+
+	public int getLongestArray() {
+		return longestArray;
+	}
+
+
+	public void setLongestArray(int longestArray) {
+		this.longestArray = longestArray;
+	}
 }

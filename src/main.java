@@ -21,31 +21,31 @@ public class main {
 		test.insert(8, 1);
 		test.insert(31, 3);
 
-	//	System.out.println('\n' + "\n" + test.toString());
-//		test.remove(test.lookup(14));
-//		test.remove(test.lookup(11));		
-//		test.remove(test.lookup(19));
-//		test.remove(test.lookup(58));
-//		test.remove(test.lookup(31));
-//		test.remove(test.lookup(3));
-//		test.remove(test.lookup(8));
-//		test.remove(test.lookup(36));
-//		test.remove(test.lookup(1));
-//		test.remove(test.lookup(4));
-//		test.remove(test.lookup(24));
-//		test.remove(test.lookup(51));
-//		test.remove(test.lookup(49));
-//		test.remove(test.lookup(43));
-//		test.remove(test.lookup(17));
-//		test.remove(test.lookup(41));
-
-
-
-
-
-
-
+		System.out.println('\n' + "\n" + test.toString());
+	
+		test.remove(test.lookup(14));
+		test.remove(test.lookup(11));		
+		test.remove(test.lookup(19));
+		test.remove(test.lookup(58));
+		test.remove(test.lookup(31));
+		test.remove(test.lookup(3));
+		test.remove(test.lookup(8));
+		test.remove(test.lookup(36));
+		System.out.println(test.getLongestArray());
+		test.remove(test.lookup(1));
+		test.remove(test.lookup(4));
+		test.remove(test.lookup(24));
+		test.remove(test.lookup(51));
+		test.remove(test.lookup(49));
+		test.remove(test.lookup(43));
+		test.remove(test.lookup(17));
+		test.remove(test.lookup(41));
+		
 		System.out.println(test.toString());
+		System.out.println(test.getLongestArray());
+
+		
+		
 
 
 	}
