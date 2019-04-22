@@ -7,7 +7,7 @@ public class FloorsArrayList implements DynamicSet {
 	
 	
     public FloorsArrayList(int N){
-    	longestArray = 0;
+    	this.longestArray = 0;
     	this.maxSize = N;
 	    this.size = 0;
 	    this.bottom = new FloorsArrayLink(Double.NEGATIVE_INFINITY,N + 1);
@@ -17,33 +17,6 @@ public class FloorsArrayList implements DynamicSet {
 	    	top.setPrev(i, bottom);
 	    }
     }
-    
-    
-    public String toString() {
-    	String s = "";
-    	FloorsArrayLink current = bottom;
-    	while(current != top) {
-    		
-    		s = s + (Double)(current.getKey()) + " | ";
-    		if(current != bottom) {
-    			for(FloorsArrayLink link : current.getPrevArr()) {
-    			s = s + link.getKey() + " ";
-    			}
-    		s = s + '\n' + "    | ";
-    		}
-    		for(FloorsArrayLink link : current.getNextArr()) {
-    			s = s + link.getKey() + " ";
-    		}
-    		current = current.getNext(0);
-    		s = s + '\n';
-    	}
-    	s = s + current.getKey() + " | ";
-		for(FloorsArrayLink link : current.getPrevArr()) {
-		s = s + link.getKey() + " ";
-		}
-    	return s;
-    }
-    
 
 
     @Override
@@ -60,7 +33,7 @@ public class FloorsArrayList implements DynamicSet {
     	FloorsArrayLink comp = bottom;
     	//finds place for the key
 
-    	for(int i=maxSize ; i>=0 ; i--) {
+    	for(int i = longestArray ; i >= 0 ; i--) {
     		while(comp.getNext(i).getKey()<key){comp = comp.getNext(i);}   		
     	}
     	FloorsArrayLink right = comp.getNext(0);
@@ -82,29 +55,25 @@ public class FloorsArrayList implements DynamicSet {
     }
     
     @Override
-    public void remove(FloorsArrayLink toRemove) {
-    	
+    public void remove(FloorsArrayLink toRemove) {  	
     	FloorsArrayLink right = toRemove.getNext(0);
     	FloorsArrayLink left = toRemove.getPrev(0);
-    	
-    	boolean isFound = false;
-    	if(toRemove.getArrSize()==longestArray) {
-    		for(int i = toRemove.getArrSize()-1 ; i>=0 & !isFound ; i--) {
-    			if(toRemove.getNext(i) != top | toRemove.getPrev(i) != bottom) {
-    				longestArray = i+1;
-    				isFound = true;
-    			}
-    		}
-    	}
-    	
+    	int newLongestArray = 0;
     	for(int i=0 ; i<toRemove.getArrSize() ; i++)
     	{
-    		while(left.getArrSize() <= i) {left = left.getPrev(0);}
-    		while(right.getArrSize() <= i) {right = right.getNext(0);}
+    		while(left.getArrSize() <= i) {
+    			if(left != bottom & left.getArrSize() > newLongestArray)newLongestArray = left.getArrSize();
+    			left = left.getPrev(0);
+    			}
+    		while(right.getArrSize() <= i) {
+    			if(right != top & right.getArrSize() > newLongestArray)newLongestArray = right.getArrSize();
+    			right = right.getNext(0);
+    			}
     		left.setNext(i, right);
     		right.setPrev(i, left);
     	
     	}
+    	if(toRemove.getArrSize() == longestArray )longestArray = newLongestArray;
     	size--;
     	if(size==0) {longestArray = 0;}
     }
@@ -113,7 +82,6 @@ public class FloorsArrayList implements DynamicSet {
     public FloorsArrayLink lookup(double key) {
     	
     	FloorsArrayLink curr = bottom; 
-    	// was size-1 instead of maxSize
     	for(int i = longestArray ; i>=0 ; i--) {
     		while( curr.getNext(i).getKey() <= key) {
     			curr = curr.getNext(i);
@@ -153,4 +121,29 @@ public class FloorsArrayList implements DynamicSet {
 	public void setLongestArray(int longestArray) {
 		this.longestArray = longestArray;
 	}
+    public String toString() {
+    	String s = "";
+    	FloorsArrayLink current = bottom;
+    	while(current != top) {
+    		
+    		s = s + (Double)(current.getKey()) + " | ";
+    		if(current != bottom) {
+    			for(FloorsArrayLink link : current.getPrevArr()) {
+    			s = s + link.getKey() + " ";
+    			}
+    		s = s + '\n' + "    | ";
+    		}
+    		for(FloorsArrayLink link : current.getNextArr()) {
+    			s = s + link.getKey() + " ";
+    		}
+    		current = current.getNext(0);
+    		s = s + '\n';
+    	}
+    	s = s + current.getKey() + " | ";
+		for(FloorsArrayLink link : current.getPrevArr()) {
+		s = s + link.getKey() + " ";
+		}
+    	return s;
+    }
+    
 }

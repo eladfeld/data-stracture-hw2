@@ -1,6 +1,30 @@
 
 public class main {
 	public static void main(String[] args) {
+		FloorsArrayList elad = new FloorsArrayList(20);
+		elad.insert(9, 9);
+		elad.insert(4, 4);
+		elad.insert(5, 2);
+		elad.insert(6.5, 2);
+		elad.insert(7,1);
+		elad.insert(8, 5);
+		elad.insert(2, 3);
+		elad.insert(4.5, 15);
+		System.out.println(elad.getLongestArray());
+		elad.remove(elad.lookup(4.5));
+		System.out.println(elad.getLongestArray());
+		elad.remove(elad.lookup(9));
+		elad.remove(elad.lookup(7));
+
+		System.out.println(elad.getLongestArray());
+
+		
+		
+		
+		
+		
+		
+		System.out.println("_______________________________________________________________________________________________________");
 		FloorsArrayList test = new FloorsArrayList(20);
 		test.insert(1, 1);
 		//System.out.println(test.toString());
