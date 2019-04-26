@@ -1,11 +1,14 @@
 public class FloorsArrayList implements DynamicSet {
+	
+	
 	private int size;
 	private int maxSize;
 	private FloorsArrayLink bottom;
 	private FloorsArrayLink top;
 	int longestArray;
 	
-	
+	//The constructor initial the list with tow links holding minus infinity and infinity keys , both 
+	//links are pointing at each other with every cell.
     public FloorsArrayList(int N){
     	this.longestArray = 0;
     	this.maxSize = N;
@@ -26,25 +29,34 @@ public class FloorsArrayList implements DynamicSet {
 
     @Override
     public void insert(double key, int arrSize) {
+    	//the insert method checks first if a new link can be add to the list.
     	if(size < maxSize & arrSize <= maxSize) {
     	
+    	//The method set the list's longestArray field to be the max between the
+    	//existing one and the new one.
     	longestArray = Math.max(arrSize, longestArray);
     	FloorsArrayLink toInsert = new FloorsArrayLink(key,arrSize);
+    	
+    	//The method look for the right place for the new link in the list to stay sorted.
+    	//very similar to the lookup method
     	FloorsArrayLink comp = bottom;
-    	//finds place for the key
-
-    	for(int i = longestArray ; i >= 0 ; i--) {
-    		while(comp.getNext(i).getKey()<key){comp = comp.getNext(i);}   		
-    	}
+    	for(int i = longestArray ; i >= 0 ; i--) 
+    		while(comp.getNext(i).getKey()<key)comp = comp.getNext(i);   		
+    	
     	FloorsArrayLink right = comp.getNext(0);
     	FloorsArrayLink left = comp;
-    	for(int i = 0 ;i < arrSize; i++ ) { //changes the toInsert's array's pointers to the correct values.
+    	
+    	//The method sets the pointers of the link's arrays to the correct links from bottom to top
+    	//if the links' arrays are too short it moves to the next link.
+    	for(int i = 0 ;i < arrSize; i++ ) { 
     		while(left.getArrSize() <= i ) left = left.getPrev(i-1);
     		toInsert.setPrev(i, left);
     		while(right.getArrSize() <= i) right = right.getNext(i-1);
     		toInsert.setNext(i, right);
     	}
-    	for(int i = arrSize -1; i >= 0; i--) { //change the surrounding links' array's pointer
+    	//The method changes the surrounding links pointers from the furthest links (the ones that the 
+    	//last for loop ended with) to the closest one , moving from the top floor cell to the bottom.
+    	for(int i = arrSize -1; i >= 0; i--) { 
     		while(left.getNext(i).getKey() < key) left = left.getNext(i);
     		left.setNext(i, toInsert);
     		while(right.getPrev(i).getKey() > key) right = right.getPrev(i);
@@ -59,6 +71,11 @@ public class FloorsArrayList implements DynamicSet {
     	FloorsArrayLink right = toRemove.getNext(0);
     	FloorsArrayLink left = toRemove.getPrev(0);
     	int newLongestArray = 0;
+    	
+    	//The method replace all the pointers in the surrounding links from the bottom to the top 
+    	//whenever a link is too short it step to the next link until it remove all of the pointers that
+    	//point on the toRemove link and also set new longestArray size if the toRemove link had the longest
+    	//array.
     	for(int i=0 ; i<toRemove.getArrSize() ; i++)
     	{
     		while(left.getArrSize() <= i) {
@@ -73,6 +90,7 @@ public class FloorsArrayList implements DynamicSet {
     		right.setPrev(i, left);
     	
     	}
+    	
     	if(toRemove.getArrSize() == longestArray )longestArray = newLongestArray;
     	size--;
     	if(size==0) {longestArray = 0;}
@@ -80,8 +98,11 @@ public class FloorsArrayList implements DynamicSet {
 
     @Override
     public FloorsArrayLink lookup(double key) {
-    	
     	FloorsArrayLink curr = bottom; 
+    	//The method starts from the bottom link in the top cell that points to the Link 
+    	//with the longest array and step down as long as the key of the pointer in the current 
+    	//cell is bigger then the key , otherwise it move to that link from the same floor atc..
+    	//
     	for(int i = longestArray ; i>=0 ; i--) {
     		while( curr.getNext(i).getKey() <= key) {
     			curr = curr.getNext(i);

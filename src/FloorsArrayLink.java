@@ -10,11 +10,12 @@ public class FloorsArrayLink {
     	this.arrSize = arrSize;
     	this.nextArr = new FloorsArrayLink[arrSize]; 
     	this.prevArr = new FloorsArrayLink[arrSize]; 
-
     }
+    
     public FloorsArrayLink[] getNextArr() {
     	return this.nextArr;
     }
+    
     public FloorsArrayLink[] getPrevArr() {
     	return this.prevArr;
     }
